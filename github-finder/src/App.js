@@ -1,14 +1,36 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Navbar from "./components/layouts/Navbar";
+import User from "./components/users/User";
+import axios from "axios";
 
-export class App extends Component {
+class App extends Component {
+  state = {
+    users: [],
+    loading: false
+  };
+
+  componentDidMount() {
+    this.setState({ loading: true });
+
+    axios.get("https://api.github.com/users").then(res =>
+      this.setState({
+        users: res.data,
+        loading: false
+      })
+    );
+  }
+
   render() {
     return (
       <div>
-        <h1 className='text-danger'>Hello from App js file</h1>
+        <Navbar />
+        <div className="container">
+          <User loading={this.state.loading} users={this.state.users} />
+        </div>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
