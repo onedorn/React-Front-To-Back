@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/layouts/Navbar";
+import Users from "./components/users/Users";
 import User from "./components/users/User";
-import SingleUser from "./components/users/SingleUser";
 import About from "./components/pages/About";
 import axios from "axios";
 import Search from "./components/users/Search";
@@ -31,7 +31,7 @@ class App extends Component {
       );
   };
 
-  getUser = (username) => {
+  getUser = username => {
     this.setState({ loading: true });
     axios
       .get(
@@ -42,24 +42,22 @@ class App extends Component {
           user: res.data,
           loading: false
         })
-        );
-    };
-    
+      );
+  };
+
   clearUsers = () => {
     this.setState({
       users: [],
       loading: false
     });
   };
-  
+
   setAlert = (msg, type) => {
     this.setState({ alert: { msg: msg, type: type } });
     setTimeout(() => this.setState({ alert: null }), 5000);
   };
-  
+
   render() {
-    console.log(this.state.users);
-    
     return (
       <Router>
         <div>
@@ -78,7 +76,7 @@ class App extends Component {
                       showClear={this.state.users.length > 0 ? true : false}
                       setAlert={this.setAlert}
                     />
-                    <User
+                    <Users
                       loading={this.state.loading}
                       users={this.state.users}
                     />
@@ -90,10 +88,10 @@ class App extends Component {
                 exact
                 path="/user/:login"
                 render={props => (
-                  <SingleUser
+                  <User
                     {...props}
                     getUser={this.getUser}
-                    singleUser={this.state.user}
+                    user={this.state.user}
                     loading={this.state.loading}
                   />
                 )}
