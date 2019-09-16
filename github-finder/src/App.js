@@ -3,7 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/layouts/Navbar";
 import User from "./components/users/User";
-import About from './components/pages/About';
+import SingleUser from "./components/users/SingleUser";
+import About from "./components/pages/About";
 import axios from "axios";
 import Search from "./components/users/Search";
 import Alert from "./components/layouts/Alert";
@@ -11,6 +12,7 @@ import Alert from "./components/layouts/Alert";
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   };
@@ -29,19 +31,35 @@ class App extends Component {
       );
   };
 
+  getUser = (username) => {
+    this.setState({ loading: true });
+    axios
+      .get(
+        `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      )
+      .then(res =>
+        this.setState({
+          user: res.data,
+          loading: false
+        })
+        );
+    };
+    
   clearUsers = () => {
     this.setState({
       users: [],
       loading: false
     });
   };
-
+  
   setAlert = (msg, type) => {
     this.setState({ alert: { msg: msg, type: type } });
     setTimeout(() => this.setState({ alert: null }), 5000);
   };
-
+  
   render() {
+    console.log(this.state.users);
+    
     return (
       <Router>
         <div>
@@ -67,7 +85,19 @@ class App extends Component {
                   </Fragment>
                 )}
               />
-              <Route exact path='/about' component={About}/>
+              <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/user/:login"
+                render={props => (
+                  <SingleUser
+                    {...props}
+                    getUser={this.getUser}
+                    singleUser={this.state.user}
+                    loading={this.state.loading}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
