@@ -1,19 +1,31 @@
 import React, { useState } from "react";
-import M from 'materialize-css/dist/js/materialize.min.js';
+import M from "materialize-css/dist/js/materialize.min.js";
+import { connect } from "react-redux";
+import { addLogs } from "../../actions/logActions";
 
-const AddLogModal = () => {
+const AddLogModal = ({ addLogs }) => {
   const [message, setMessage] = useState("");
   const [attention, setAttention] = useState(false);
   const [tech, setTech] = useState("");
 
   const onSubmit = () => {
-    if(message === '' || tech === '') {
-      M.toast({ html: 'Please enter a message and tech' })
+    if (message === "" || tech === "") {
+      M.toast({ html: "Please enter a message and tech" });
     } else {
-      console.log(message, tech, attention);
+      const newLog = {
+        message,
+        attention,
+        tech,
+        date: new Date()
+      };
+
+      addLogs(newLog);
+
+      M.toast({html: `Log added by ${tech}`})
+
       // clear fields
-      setMessage('');
-      setTech('');
+      setMessage("");
+      setTech("");
       setAttention(false);
     }
   };
@@ -47,15 +59,9 @@ const AddLogModal = () => {
               <option value="" disabled>
                 Select Technician
               </option>
-              <option value="VS" >
-                Volodymyr Syvoraksha
-              </option>
-              <option value="VS" >
-                Volodymyr Syvoraksha
-              </option>
-              <option value="VS" >
-                Volodymyr Syvoraksha
-              </option>
+              <option value="VS">Volodymyr Syvoraksha</option>
+              <option value="VS">Volodymyr Syvoraksha</option>
+              <option value="VS">Volodymyr Syvoraksha</option>
               {/* <TechSelectOptions /> */}
             </select>
           </div>
@@ -83,7 +89,7 @@ const AddLogModal = () => {
           href="#!"
           onClick={onSubmit}
           className="modal-close waves-effect blue waves-light btn mr-4"
-          style={{margin: '20px'}}
+          style={{ margin: "20px" }}
         >
           Enter
         </a>
@@ -97,4 +103,7 @@ const modalStyle = {
   height: "75%"
 };
 
-export default AddLogModal;
+export default connect(
+  null,
+  { addLogs }
+)(AddLogModal);
