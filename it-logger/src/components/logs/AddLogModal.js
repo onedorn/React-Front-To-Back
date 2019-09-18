@@ -21,7 +21,7 @@ const AddLogModal = ({ addLogs }) => {
 
       addLogs(newLog);
 
-      M.toast({html: `Log added by ${tech}`})
+      M.toast({html: `Log added by ${tech}`}) 
 
       // clear fields
       setMessage("");

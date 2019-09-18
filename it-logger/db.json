@@ -1,20 +1,5 @@
 {
-  "logs": [
-    {
-      "message": "Changed network 007",
-      "attention": true,
-      "tech": "VS",
-      "date": "2019-09-18T09:01:40.258Z",
-      "id": 1
-    },
-    {
-      "message": "What are you doing?",
-      "attention": false,
-      "tech": "VS",
-      "date": "2019-09-18T09:01:54.391Z",
-      "id": 2
-    }
-  ],
+  "logs": [],
   "techs": [
     {
       "id": 1,
